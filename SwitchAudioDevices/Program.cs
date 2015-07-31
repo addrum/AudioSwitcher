@@ -9,6 +9,8 @@ namespace SwitchAudioDevices
 {
     public class Program
     {
+        private static int deviceCount;
+        private static int currentDeviceId;
 
         /// <summary>
         /// The main entry point for the application.
@@ -19,7 +21,16 @@ namespace SwitchAudioDevices
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-        }        
+        }
+
+        public Program()
+        {
+            // Count sound-devices
+            foreach (var tuple in GetDevices())
+            {
+                deviceCount += 1;
+            }
+        }
         
         #region Tray events
 
@@ -73,7 +84,7 @@ namespace SwitchAudioDevices
             return devices;
         }
 
-        private static void SelectDevice(int id)
+        public static void SelectDevice(int id)
         {
             var p = new Process
             {
@@ -90,19 +101,20 @@ namespace SwitchAudioDevices
             p.WaitForExit();
         }
 
-        #endregion
-
-        #region Key handling
-
-        public void HandleKeyboardShortcuts()
+        //Gets the ID of the next sound device in the list
+        public static int NextId()
         {
-            HookManager.KeyUp += HookManager_KeyUp;
+            if (currentDeviceId == deviceCount)
+            {
+                currentDeviceId = 1;
+            }
+            else
+            {
+                currentDeviceId += 1;
+            }
+            return currentDeviceId;
         }
 
-        private void HookManager_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e)
-        }
         #endregion
     }
 }

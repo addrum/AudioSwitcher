@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using Gma.UserActivityMonitor;
+using System.Diagnostics;
 
 namespace SwitchAudioDevices
 {
@@ -58,7 +60,7 @@ namespace SwitchAudioDevices
 
         private void NotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            OpenPreferences(sender, e);
+            Program.SelectDevice(Program.NextId());
         }
 
         private void Form1_ClientSizeChanged(object sender, EventArgs e)
@@ -68,5 +70,34 @@ namespace SwitchAudioDevices
                 Visible = false;
             }
         }
+
+        private void globalHotkeysCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                HookManager.KeyUp += HookManager_KeyUp;
+                if (globalHotkeysCheckBox.Checked)
+                {
+                    HookManager.KeyUp += HookManager_KeyUp;
+                }
+                else
+                {
+                    HookManager.KeyUp -= HookManager_KeyUp;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+        }
+
+        private void HookManager_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == 68)
+            {
+                Program.SelectDevice(Program.NextId());
+            }
+        }
+
     }
 }

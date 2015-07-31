@@ -34,6 +34,7 @@ namespace SwitchAudioDevices
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.globalHotkeysCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // NotifyIcon
@@ -43,21 +44,35 @@ namespace SwitchAudioDevices
             this.NotifyIcon.Visible = true;
             this.NotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon_MouseDoubleClick);
             // 
+            // globalHotkeysCheckBox
+            // 
+            this.globalHotkeysCheckBox.AutoSize = true;
+            this.globalHotkeysCheckBox.Location = new System.Drawing.Point(13, 13);
+            this.globalHotkeysCheckBox.Name = "globalHotkeysCheckBox";
+            this.globalHotkeysCheckBox.Size = new System.Drawing.Size(98, 17);
+            this.globalHotkeysCheckBox.TabIndex = 0;
+            this.globalHotkeysCheckBox.Text = "Global Hotkeys";
+            this.globalHotkeysCheckBox.UseVisualStyleBackColor = true;
+            this.globalHotkeysCheckBox.CheckedChanged += new System.EventHandler(this.globalHotkeysCheckBox_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.globalHotkeysCheckBox);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ClientSizeChanged += new System.EventHandler(this.Form1_ClientSizeChanged);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private NotifyIcon NotifyIcon;
+        private CheckBox globalHotkeysCheckBox;
     }
 }
 

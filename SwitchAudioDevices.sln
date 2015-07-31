@@ -5,16 +5,39 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwitchAudioDevices", "SwitchAudioDevices\SwitchAudioDevices.csproj", "{FDF88CEB-8155-4B99-843C-75E03F9193EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gma.UserActivityMonitor", "GlobalEventHooks\Gma.UserActivityMonitor.csproj", "{F52AA97E-180A-40ED-8F2B-09080171D6C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Cloud|Any CPU = Cloud|Any CPU
+		Cloud|x86 = Cloud|x86
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Cloud|Any CPU.ActiveCfg = Release|Any CPU
+		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Cloud|Any CPU.Build.0 = Release|Any CPU
+		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Cloud|x86.ActiveCfg = Release|Any CPU
 		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Release|x86.ActiveCfg = Release|Any CPU
+		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Cloud|Any CPU.ActiveCfg = Cloud|Any CPU
+		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Cloud|Any CPU.Build.0 = Cloud|Any CPU
+		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Cloud|x86.ActiveCfg = Cloud|x86
+		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Cloud|x86.Build.0 = Cloud|x86
+		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Debug|x86.ActiveCfg = Debug|x86
+		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Debug|x86.Build.0 = Debug|x86
+		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Release|x86.ActiveCfg = Release|x86
+		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
