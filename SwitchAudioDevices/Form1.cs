@@ -7,13 +7,15 @@ namespace SwitchAudioDevices
 {
     public partial class Form1 : Form
     {
-        private ContextMenu menu;
+        private readonly ContextMenu _menu;
+        public bool DoubleClickToCycle { get; set; }
+
         public Form1()
         {
             InitializeComponent();
-            menu = new ContextMenu();
-            NotifyIcon.ContextMenu = menu;
-            Program.PopulateDeviceList(menu);
+            _menu = new ContextMenu();
+            NotifyIcon.ContextMenu = _menu;
+            Program.PopulateDeviceList(_menu);
             AddPreferencesAndExit();
         }
 
@@ -22,14 +24,14 @@ namespace SwitchAudioDevices
             // Add preferences
             var preferencesItem = new MenuItem { Text = "Preferences" };
             preferencesItem.Click += OpenPreferences;
-            menu.MenuItems.Add("-");
-            menu.MenuItems.Add(preferencesItem);
+            _menu.MenuItems.Add("-");
+            _menu.MenuItems.Add(preferencesItem);
 
             // Add an exit button
             var exitItem = new MenuItem { Text = "Exit" };
             exitItem.Click += OnExit;
-            menu.MenuItems.Add("-");
-            menu.MenuItems.Add(exitItem);
+            _menu.MenuItems.Add("-");
+            _menu.MenuItems.Add(exitItem);
         }
 
         private void OpenPreferences(object sender, EventArgs e)
@@ -60,7 +62,8 @@ namespace SwitchAudioDevices
 
         private void NotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            Program.SelectDevice(Program.NextId());
+            if (DoubleClickToCycle)
+                Program.SelectDevice(Program.NextId());
         }
 
         private void Form1_ClientSizeChanged(object sender, EventArgs e)
@@ -99,5 +102,9 @@ namespace SwitchAudioDevices
             }
         }
 
+        private void doubleClickCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            DoubleClickToCycle = doubleClickCheckBox.Checked;
+        }
     }
 }

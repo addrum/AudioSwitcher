@@ -35,6 +35,7 @@ namespace SwitchAudioDevices
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.globalHotkeysCheckBox = new System.Windows.Forms.CheckBox();
+            this.doubleClickCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // NotifyIcon
@@ -55,11 +56,23 @@ namespace SwitchAudioDevices
             this.globalHotkeysCheckBox.UseVisualStyleBackColor = true;
             this.globalHotkeysCheckBox.CheckedChanged += new System.EventHandler(this.globalHotkeysCheckBox_CheckedChanged);
             // 
+            // doubleClickCheckBox
+            // 
+            this.doubleClickCheckBox.AutoSize = true;
+            this.doubleClickCheckBox.Location = new System.Drawing.Point(13, 37);
+            this.doubleClickCheckBox.Name = "doubleClickCheckBox";
+            this.doubleClickCheckBox.Size = new System.Drawing.Size(194, 17);
+            this.doubleClickCheckBox.TabIndex = 1;
+            this.doubleClickCheckBox.Text = "Double click to cycle audio devices";
+            this.doubleClickCheckBox.UseVisualStyleBackColor = true;
+            this.doubleClickCheckBox.CheckedChanged += new System.EventHandler(this.doubleClickCheckBox_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.doubleClickCheckBox);
             this.Controls.Add(this.globalHotkeysCheckBox);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -73,6 +86,7 @@ namespace SwitchAudioDevices
 
         private NotifyIcon NotifyIcon;
         private CheckBox globalHotkeysCheckBox;
+        private CheckBox doubleClickCheckBox;
     }
 }
 
