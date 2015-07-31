@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioSwitcher", "AudioSwitcher\AudioSwitcher.csproj", "{9CFCC686-7807-4759-B2E0-F134D55F1513}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwitchAudioDevices", "SwitchAudioDevices\SwitchAudioDevices.csproj", "{FDF88CEB-8155-4B99-843C-75E03F9193EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +17,10 @@ Global
 		{9CFCC686-7807-4759-B2E0-F134D55F1513}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CFCC686-7807-4759-B2E0-F134D55F1513}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CFCC686-7807-4759-B2E0-F134D55F1513}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

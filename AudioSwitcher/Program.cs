@@ -1,52 +1,63 @@
-﻿using AudioSwitcher.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+using AudioSwitcher.Properties;
 
 namespace AudioSwitcher
 {
-    public class SysTrayApp : Form
+    public class SwitchAudioDevices : Form
     {
         [STAThread]
         public static void Main()
         {
-            Application.Run(new SysTrayApp());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new SwitchAudioDevices());
         }
 
-        private NotifyIcon trayIcon;
-        private ContextMenu trayMenu;
-        private int deviceCount;
-        private int currentDeviceId;
+        private readonly NotifyIcon _trayIcon;
+        private readonly ContextMenu _trayMenu;
+        private readonly int _deviceCount;
+        private Button button1;
+        private int _currentDeviceId;
         
 
-        public SysTrayApp()
+        public SwitchAudioDevices()
         {
+            InitializeComponent();
+            // Set form properties
+        
+            ClientSize = new Size(292, 266);
+
             // Create a simple tray menu
-            trayMenu = new ContextMenu();
+            _trayMenu = new ContextMenu();
 
             // Create a tray icon
-            trayIcon = new NotifyIcon();
-            trayIcon.Text = "AudioSwitcher";
-            trayIcon.Icon = new Icon(Resources.speaker, 40, 40);
+            _trayIcon = new NotifyIcon
+            {
+                Text = "Switch Audio Devices",
+                Icon = new Icon(Resources.speaker, 40, 40),
+                ContextMenu = _trayMenu,
+                Visible = true
+            };
 
             // Add menu to tray icon and show it
-            trayIcon.ContextMenu = trayMenu;
-            trayIcon.Visible = true;
 
             // Count sound-devices
             foreach (var tuple in GetDevices())
             {
-                deviceCount += 1;
+                _deviceCount += 1;
             }
 
             // Populate device list when menu is opened
-            trayIcon.ContextMenu.Popup += PopulateDeviceList;
+            _trayIcon.ContextMenu.Popup += PopulateDeviceList;
 
             // Register MEH on trayicon leftclick
-            trayIcon.MouseUp += new MouseEventHandler(TrayIcon_LeftClick);
+            _trayIcon.MouseUp += TrayIcon_LeftClick;
         }
 
         // Selects next device in list when trayicon is left-clicked
@@ -54,19 +65,19 @@ namespace AudioSwitcher
         {
             if (e.Button == MouseButtons.Left)
             {
-                SelectDevice(nextId());
+                SelectDevice(NextId());
             }
         }
 
         //Gets the ID of the next sound device in the list
-        private int nextId()
+        private int NextId()
         {
-            if (currentDeviceId == deviceCount){
-                currentDeviceId = 1;
+            if (_currentDeviceId == _deviceCount){
+                _currentDeviceId = 1;
             } else {
-                currentDeviceId += 1;
+                _currentDeviceId += 1;
             }
-            return currentDeviceId;
+            return _currentDeviceId;
         }
 
         
@@ -76,7 +87,7 @@ namespace AudioSwitcher
         private void PopulateDeviceList(object sender, EventArgs e)
         {
             // Empty menu to prevent stuff to pile up
-            trayMenu.MenuItems.Clear();
+            _trayMenu.MenuItems.Clear();
 
             // All all active devices
             foreach (var tuple in GetDevices())
@@ -88,14 +99,20 @@ namespace AudioSwitcher
                 var item = new MenuItem {Checked = isInUse, Text = deviceName};
                 item.Click += (s, a) => SelectDevice(id);
 
-                trayMenu.MenuItems.Add(item);
+                _trayMenu.MenuItems.Add(item);
             }
+
+            // Add preferences
+            var preferencesItem = new MenuItem {Text = "Preferences"};
+            preferencesItem.Click += OpenPreferences;
+            _trayMenu.MenuItems.Add("-");
+            _trayMenu.MenuItems.Add(preferencesItem);
 
             // Add an exit button
             var exitItem = new MenuItem {Text = "Exit"};
             exitItem.Click += OnExit;
-            trayMenu.MenuItems.Add("-");
-            trayMenu.MenuItems.Add(exitItem);
+            _trayMenu.MenuItems.Add("-");
+            _trayMenu.MenuItems.Add(exitItem);
         }
 
         #endregion
@@ -152,6 +169,14 @@ namespace AudioSwitcher
 
         #region Main app methods
 
+        private void OpenPreferences(object Sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+                WindowState = FormWindowState.Normal;
+            
+            Activate();
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             Visible = false; // Hide form window.
@@ -162,6 +187,7 @@ namespace AudioSwitcher
 
         private void OnExit(object sender, EventArgs e)
         {
+            Dispose(true);
             Application.Exit();
         }
 
@@ -170,12 +196,34 @@ namespace AudioSwitcher
             if (isDisposing)
             {
                 // Release the icon resource.
-                trayIcon.Dispose();
+                _trayIcon.Dispose();
             }
 
             base.Dispose(isDisposing);
         }
 
         #endregion
+
+        private void InitializeComponent()
+        {
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(SwitchAudioDevices));
+            button1 = new Button();
+            SuspendLayout();
+            // 
+            // button1
+            // 
+            resources.ApplyResources(button1, "button1");
+            button1.Name = "button1";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // SwitchAudioDevices
+            // 
+            resources.ApplyResources(this, "$this");
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(button1);
+            Name = "SwitchAudioDevices";
+            ResumeLayout(false);
+
+        }
     }
 }
