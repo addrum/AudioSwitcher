@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Forms;
+using Gma.UserActivityMonitor;
 
 namespace SwitchAudioDevices
 {
@@ -89,6 +90,19 @@ namespace SwitchAudioDevices
             p.WaitForExit();
         }
 
+        #endregion
+
+        #region Key handling
+
+        public void HandleKeyboardShortcuts()
+        {
+            HookManager.KeyUp += HookManager_KeyUp;
+        }
+
+        private void HookManager_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e)
+        }
         #endregion
     }
 }
