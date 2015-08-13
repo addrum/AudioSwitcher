@@ -38,6 +38,8 @@ namespace SwitchAudioDevices
             this.globalHotkeysCheckBox = new System.Windows.Forms.CheckBox();
             this.doubleClickCheckBox = new System.Windows.Forms.CheckBox();
             this.globalEventProvider = new Gma.UserActivityMonitor.GlobalEventProvider();
+            this.hotkeysLabel = new System.Windows.Forms.Label();
+            this.hotkeysTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // NotifyIcon
@@ -69,11 +71,32 @@ namespace SwitchAudioDevices
             this.doubleClickCheckBox.UseVisualStyleBackColor = true;
             this.doubleClickCheckBox.CheckedChanged += new System.EventHandler(this.doubleClickCheckBox_CheckedChanged);
             // 
+            // hotkeysLabel
+            // 
+            this.hotkeysLabel.AutoSize = true;
+            this.hotkeysLabel.Location = new System.Drawing.Point(13, 61);
+            this.hotkeysLabel.Name = "hotkeysLabel";
+            this.hotkeysLabel.Size = new System.Drawing.Size(49, 13);
+            this.hotkeysLabel.TabIndex = 2;
+            this.hotkeysLabel.Text = "Hotkeys:";
+            // 
+            // hotkeysTextBox
+            // 
+            this.hotkeysTextBox.Location = new System.Drawing.Point(68, 58);
+            this.hotkeysTextBox.Name = "hotkeysTextBox";
+            this.hotkeysTextBox.ReadOnly = true;
+            this.hotkeysTextBox.Size = new System.Drawing.Size(139, 20);
+            this.hotkeysTextBox.TabIndex = 3;
+            this.hotkeysTextBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.hotkeysTextBox_MouseClick);
+            this.hotkeysTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.hotkeysTextBox_KeyUp);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.hotkeysTextBox);
+            this.Controls.Add(this.hotkeysLabel);
             this.Controls.Add(this.doubleClickCheckBox);
             this.Controls.Add(this.globalHotkeysCheckBox);
             this.Name = "Form1";
@@ -90,6 +113,8 @@ namespace SwitchAudioDevices
         private CheckBox globalHotkeysCheckBox;
         private CheckBox doubleClickCheckBox;
         private Gma.UserActivityMonitor.GlobalEventProvider globalEventProvider;
+        private Label hotkeysLabel;
+        private TextBox hotkeysTextBox;
     }
 }
 

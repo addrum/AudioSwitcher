@@ -46,5 +46,17 @@ namespace SwitchAudioDevices.Properties {
                 this["DoubleClickToCycle"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("CTRL,ALT,123")]
+        public string Hotkey {
+            get {
+                return ((string)(this["Hotkey"]));
+            }
+            set {
+                this["Hotkey"] = value;
+            }
+        }
     }
 }
