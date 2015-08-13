@@ -28,11 +28,11 @@ namespace SwitchAudioDevices
         {
 
             // All all active devices
-            foreach (var tuple in GetDevices())
+            foreach (var device in GetDevices())
             {
-                var id = tuple.Item1;
-                var deviceName = tuple.Item2;
-                var isInUse = tuple.Item3;
+                var id = device.Item1;
+                var deviceName = device.Item2;
+                var isInUse = device.Item3;
 
                 var item = new MenuItem { Checked = isInUse, Text = deviceName };
                 item.Click += (s, a) => SelectDevice(id);
@@ -47,6 +47,7 @@ namespace SwitchAudioDevices
 
         private static IEnumerable<Tuple<int, string, bool>> GetDevices()
         {
+            _deviceCount = 0;
             var p = new Process
             {
                 StartInfo =
@@ -104,6 +105,18 @@ namespace SwitchAudioDevices
                 _currentDeviceId += 1;
             }
             return _currentDeviceId;
+        }
+
+        public static string GetCurrentPlaybackDevice()
+        {
+            var deviceName = "";
+            foreach (var device in GetDevices())
+            {
+                if (device.Item1 == _currentDeviceId)
+                    deviceName = device.Item2;
+            }
+            
+            return deviceName;
         }
 
         #endregion

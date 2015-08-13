@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
 using SwitchAudioDevices.Properties;
 
@@ -71,16 +70,15 @@ namespace SwitchAudioDevices
 
         private void NotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (DoubleClickToCycle)
-                Program.SelectDevice(Program.NextId());
+            if (!DoubleClickToCycle) return;
+            Program.SelectDevice(Program.NextId());
+            ShowBalloonTip();
         }
 
         private void Form1_ClientSizeChanged(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Minimized)
-            {
                 Visible = false;
-            }
         }
 
         private void doubleClickCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -90,13 +88,21 @@ namespace SwitchAudioDevices
 
          void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
-            if (GlobalHotkeys)
-                Program.SelectDevice(Program.NextId());
+             if (!GlobalHotkeys) return;
+             Program.SelectDevice(Program.NextId());
+             ShowBalloonTip();
         }
 
         private void globalHotkeysCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             GlobalHotkeys = globalHotkeysCheckBox.Checked;
+        }
+
+        private void ShowBalloonTip()
+        {
+            NotifyIcon.Visible = false;
+            NotifyIcon.Visible = true;
+            NotifyIcon.ShowBalloonTip(1000, "Audio Device Changed", "Device changed to: " + Program.GetCurrentPlaybackDevice(), ToolTipIcon.None);
         }
     }
 }
