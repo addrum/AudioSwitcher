@@ -31,13 +31,13 @@ namespace SwitchAudioDevices
         private void AddPreferencesAndExit()
         {
             // Add preferences
-            var preferencesItem = new MenuItem { Text = Resources.Form1_AddPreferencesAndExit_Preferences };
+            var preferencesItem = new MenuItem { Text = Resources.Preferences };
             preferencesItem.Click += OpenPreferences;
             _menu.MenuItems.Add("-");
             _menu.MenuItems.Add(preferencesItem);
 
             // Add an exit button
-            var exitItem = new MenuItem { Text = Resources.Form1_AddPreferencesAndExit_Exit };
+            var exitItem = new MenuItem { Text = Resources.Exit };
             exitItem.Click += OnExit;
             _menu.MenuItems.Add("-");
             _menu.MenuItems.Add(exitItem);
@@ -113,7 +113,7 @@ namespace SwitchAudioDevices
         {
             NotifyIcon.Visible = false;
             NotifyIcon.Visible = true;
-            NotifyIcon.ShowBalloonTip(Settings.Default.BalloonTimeout, "Audio Device Changed", "Device changed to: " + Program.GetCurrentPlaybackDevice(), ToolTipIcon.None);
+            NotifyIcon.ShowBalloonTip(1000, "Audio Device Changed", "Device changed to: " + Program.GetCurrentPlaybackDevice(), ToolTipIcon.None);
         }
     }
 }

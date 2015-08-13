@@ -63,18 +63,18 @@ namespace SwitchAudioDevices.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
-        internal static string Form1_AddPreferencesAndExit_Exit {
+        internal static string Exit {
             get {
-                return ResourceManager.GetString("Form1_AddPreferencesAndExit_Exit", resourceCulture);
+                return ResourceManager.GetString("Exit", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Preferences.
         /// </summary>
-        internal static string Form1_AddPreferencesAndExit_Preferences {
+        internal static string Preferences {
             get {
-                return ResourceManager.GetString("Form1_AddPreferencesAndExit_Preferences", resourceCulture);
+                return ResourceManager.GetString("Preferences", resourceCulture);
             }
         }
     }

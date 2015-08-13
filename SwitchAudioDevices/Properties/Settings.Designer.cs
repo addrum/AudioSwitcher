@@ -46,17 +46,5 @@ namespace SwitchAudioDevices.Properties {
                 this["DoubleClickToCycle"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public int BalloonTimeout {
-            get {
-                return ((int)(this["BalloonTimeout"]));
-            }
-            set {
-                this["BalloonTimeout"] = value;
-            }
-        }
     }
 }
