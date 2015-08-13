@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Forms;
-using Gma.UserActivityMonitor;
 
 namespace SwitchAudioDevices
 {
     public class Program
     {
-        private static int deviceCount;
-        private static int currentDeviceId;
+        private static int _deviceCount;
+        private static int _currentDeviceId;
 
         /// <summary>
         /// The main entry point for the application.
@@ -21,15 +20,6 @@ namespace SwitchAudioDevices
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-        }
-
-        public Program()
-        {
-            // Count sound-devices
-            foreach (var tuple in GetDevices())
-            {
-                deviceCount += 1;
-            }
         }
         
         #region Tray events
@@ -79,6 +69,7 @@ namespace SwitchAudioDevices
                 var elems = line.Trim().Split('|');
                 var deviceInfo = new Tuple<int, string, bool>(int.Parse(elems[0]), elems[1], elems[3].Equals("1"));
                 devices.Add(deviceInfo);
+                _deviceCount += 1;
             }
 
             return devices;
@@ -104,15 +95,15 @@ namespace SwitchAudioDevices
         //Gets the ID of the next sound device in the list
         public static int NextId()
         {
-            if (currentDeviceId == deviceCount)
+            if (_currentDeviceId == _deviceCount)
             {
-                currentDeviceId = 1;
+                _currentDeviceId = 1;
             }
             else
             {
-                currentDeviceId += 1;
+                _currentDeviceId += 1;
             }
-            return currentDeviceId;
+            return _currentDeviceId;
         }
 
         #endregion

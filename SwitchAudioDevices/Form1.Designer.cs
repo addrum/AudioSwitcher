@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace SwitchAudioDevices
 {
@@ -36,6 +37,7 @@ namespace SwitchAudioDevices
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.globalHotkeysCheckBox = new System.Windows.Forms.CheckBox();
             this.doubleClickCheckBox = new System.Windows.Forms.CheckBox();
+            this.globalEventProvider = new Gma.UserActivityMonitor.GlobalEventProvider();
             this.SuspendLayout();
             // 
             // NotifyIcon
@@ -87,6 +89,7 @@ namespace SwitchAudioDevices
         private NotifyIcon NotifyIcon;
         private CheckBox globalHotkeysCheckBox;
         private CheckBox doubleClickCheckBox;
+        private Gma.UserActivityMonitor.GlobalEventProvider globalEventProvider;
     }
 }
 

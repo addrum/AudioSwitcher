@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Windows.Forms;
-using Gma.UserActivityMonitor;
 using System.Diagnostics;
+using System.Windows.Forms;
+using SwitchAudioDevices.Properties;
 
 namespace SwitchAudioDevices
 {
@@ -9,6 +9,10 @@ namespace SwitchAudioDevices
     {
         private readonly ContextMenu _menu;
         public bool DoubleClickToCycle { get; set; }
+        public bool GlobalHotkeys { get; set; }
+
+        // http://stackoverflow.com/a/27309185/1860436
+        readonly KeyboardHook _hook = new KeyboardHook();
 
         public Form1()
         {
@@ -17,18 +21,23 @@ namespace SwitchAudioDevices
             NotifyIcon.ContextMenu = _menu;
             Program.PopulateDeviceList(_menu);
             AddPreferencesAndExit();
+
+            // reigster the event that is fired after the key press
+            _hook.KeyPressed += hook_KeyPressed;
+            // register the control + alt + F12 combination as hot key
+            _hook.RegisterHotKey(global::ModifierKeys.Control | global::ModifierKeys.Alt, Keys.F12);
         }
 
         private void AddPreferencesAndExit()
         {
             // Add preferences
-            var preferencesItem = new MenuItem { Text = "Preferences" };
+            var preferencesItem = new MenuItem { Text = Resources.Form1_AddPreferencesAndExit_Preferences };
             preferencesItem.Click += OpenPreferences;
             _menu.MenuItems.Add("-");
             _menu.MenuItems.Add(preferencesItem);
 
             // Add an exit button
-            var exitItem = new MenuItem { Text = "Exit" };
+            var exitItem = new MenuItem { Text = Resources.Form1_AddPreferencesAndExit_Exit };
             exitItem.Click += OnExit;
             _menu.MenuItems.Add("-");
             _menu.MenuItems.Add(exitItem);
@@ -74,37 +83,20 @@ namespace SwitchAudioDevices
             }
         }
 
-        private void globalHotkeysCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                HookManager.KeyUp += HookManager_KeyUp;
-                if (globalHotkeysCheckBox.Checked)
-                {
-                    HookManager.KeyUp += HookManager_KeyUp;
-                }
-                else
-                {
-                    HookManager.KeyUp -= HookManager_KeyUp;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.ToString());
-            }
-        }
-
-        private void HookManager_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyValue == 68)
-            {
-                Program.SelectDevice(Program.NextId());
-            }
-        }
-
         private void doubleClickCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             DoubleClickToCycle = doubleClickCheckBox.Checked;
+        }
+
+         void hook_KeyPressed(object sender, KeyPressedEventArgs e)
+        {
+            if (GlobalHotkeys)
+                Program.SelectDevice(Program.NextId());
+        }
+
+        private void globalHotkeysCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            GlobalHotkeys = globalHotkeysCheckBox.Checked;
         }
     }
 }
