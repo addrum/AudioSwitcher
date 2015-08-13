@@ -20,6 +20,7 @@ namespace SwitchAudioDevices
             NotifyIcon.ContextMenu = _menu;
             Program.PopulateDeviceList(_menu);
             AddPreferencesAndExit();
+            PresetValuesOfSettings();
 
             // reigster the event that is fired after the key press
             _hook.KeyPressed += hook_KeyPressed;
@@ -40,6 +41,12 @@ namespace SwitchAudioDevices
             exitItem.Click += OnExit;
             _menu.MenuItems.Add("-");
             _menu.MenuItems.Add(exitItem);
+        }
+
+        private void PresetValuesOfSettings()
+        {
+            doubleClickCheckBox.Checked = Settings.Default.DoubleClickToCycle;
+            globalHotkeysCheckBox.Checked = Settings.Default.GlobalHotkeys;
         }
 
         private void OpenPreferences(object sender, EventArgs e)
@@ -81,28 +88,32 @@ namespace SwitchAudioDevices
                 Visible = false;
         }
 
-        private void doubleClickCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            DoubleClickToCycle = doubleClickCheckBox.Checked;
-        }
-
-         void hook_KeyPressed(object sender, KeyPressedEventArgs e)
+        void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
              if (!GlobalHotkeys) return;
              Program.SelectDevice(Program.NextId());
              ShowBalloonTip();
         }
 
+        private void doubleClickCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            DoubleClickToCycle = doubleClickCheckBox.Checked;
+            Settings.Default.DoubleClickToCycle = doubleClickCheckBox.Checked;
+            Settings.Default.Save();
+        }
+
         private void globalHotkeysCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             GlobalHotkeys = globalHotkeysCheckBox.Checked;
+            Settings.Default.GlobalHotkeys = globalHotkeysCheckBox.Checked;
+            Settings.Default.Save();
         }
 
         private void ShowBalloonTip()
         {
             NotifyIcon.Visible = false;
             NotifyIcon.Visible = true;
-            NotifyIcon.ShowBalloonTip(1000, "Audio Device Changed", "Device changed to: " + Program.GetCurrentPlaybackDevice(), ToolTipIcon.None);
+            NotifyIcon.ShowBalloonTip(Settings.Default.BalloonTimeout, "Audio Device Changed", "Device changed to: " + Program.GetCurrentPlaybackDevice(), ToolTipIcon.None);
         }
     }
 }
