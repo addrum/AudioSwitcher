@@ -7,11 +7,12 @@ namespace SwitchAudioDevices
     public partial class Form1 : Form 
     {
         private readonly ContextMenu _menu;
+        KeysConverter converter = new KeysConverter();
         private bool DoubleClickToCycle { get; set; }
         private bool GlobalHotkeys { get; set; }
 
         // http://stackoverflow.com/a/27309185/1860436
-        readonly KeyboardHook _hook = new KeyboardHook();
+        private KeyboardHook _hook = new KeyboardHook();
 
         public Form1()
         {
@@ -28,8 +29,6 @@ namespace SwitchAudioDevices
             var hotkeys = Settings.Default.Hotkey.Split(',');
             ModifierKeys modifiers = 0;
             Keys keys = Keys.None;
-            try
-            {
                 foreach (var hotkey in hotkeys)
                 {
                     switch (hotkey)
@@ -47,16 +46,11 @@ namespace SwitchAudioDevices
                             modifiers |= global::ModifierKeys.Win;
                             break;
                         default:
-                            keys += int.Parse(hotkey);
+                            keys += Convert.ToChar(hotkey);
                             break;
                     }
                 }
                 _hook.RegisterHotKey(modifiers, keys);
-            }
-            catch
-            {
-                // ignored
-            }
         }
 
         private static void PopulateDeviceList(ContextMenu menu)
