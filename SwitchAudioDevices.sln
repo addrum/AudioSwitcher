@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwitchAudioDevices", "SwitchAudioDevices\SwitchAudioDevices.csproj", "{FDF88CEB-8155-4B99-843C-75E03F9193EF}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{D2380E17-4071-48B8-80A2-011104E03129}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,15 @@ Global
 		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Release|x64.ActiveCfg = Release|x64
 		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Release|x64.Build.0 = Release|x64
 		{FDF88CEB-8155-4B99-843C-75E03F9193EF}.Release|x86.ActiveCfg = Release|Any CPU
+		{D2380E17-4071-48B8-80A2-011104E03129}.Cloud|Any CPU.ActiveCfg = Release
+		{D2380E17-4071-48B8-80A2-011104E03129}.Cloud|x64.ActiveCfg = Release
+		{D2380E17-4071-48B8-80A2-011104E03129}.Cloud|x86.ActiveCfg = Release
+		{D2380E17-4071-48B8-80A2-011104E03129}.Debug|Any CPU.ActiveCfg = Debug
+		{D2380E17-4071-48B8-80A2-011104E03129}.Debug|x64.ActiveCfg = Debug
+		{D2380E17-4071-48B8-80A2-011104E03129}.Debug|x86.ActiveCfg = Debug
+		{D2380E17-4071-48B8-80A2-011104E03129}.Release|Any CPU.ActiveCfg = Release
+		{D2380E17-4071-48B8-80A2-011104E03129}.Release|x64.ActiveCfg = Release
+		{D2380E17-4071-48B8-80A2-011104E03129}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

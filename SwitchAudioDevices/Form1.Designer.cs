@@ -40,6 +40,7 @@ namespace SwitchAudioDevices
             this.globalEventProvider = new Gma.UserActivityMonitor.GlobalEventProvider();
             this.hotkeysLabel = new System.Windows.Forms.Label();
             this.hotkeysTextBox = new System.Windows.Forms.TextBox();
+            this.startupCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // NotifyIcon
@@ -52,7 +53,7 @@ namespace SwitchAudioDevices
             // globalHotkeysCheckBox
             // 
             this.globalHotkeysCheckBox.AutoSize = true;
-            this.globalHotkeysCheckBox.Location = new System.Drawing.Point(13, 13);
+            this.globalHotkeysCheckBox.Location = new System.Drawing.Point(12, 58);
             this.globalHotkeysCheckBox.Name = "globalHotkeysCheckBox";
             this.globalHotkeysCheckBox.Size = new System.Drawing.Size(98, 17);
             this.globalHotkeysCheckBox.TabIndex = 0;
@@ -63,7 +64,7 @@ namespace SwitchAudioDevices
             // doubleClickCheckBox
             // 
             this.doubleClickCheckBox.AutoSize = true;
-            this.doubleClickCheckBox.Location = new System.Drawing.Point(13, 37);
+            this.doubleClickCheckBox.Location = new System.Drawing.Point(12, 35);
             this.doubleClickCheckBox.Name = "doubleClickCheckBox";
             this.doubleClickCheckBox.Size = new System.Drawing.Size(194, 17);
             this.doubleClickCheckBox.TabIndex = 1;
@@ -74,7 +75,7 @@ namespace SwitchAudioDevices
             // hotkeysLabel
             // 
             this.hotkeysLabel.AutoSize = true;
-            this.hotkeysLabel.Location = new System.Drawing.Point(13, 61);
+            this.hotkeysLabel.Location = new System.Drawing.Point(9, 84);
             this.hotkeysLabel.Name = "hotkeysLabel";
             this.hotkeysLabel.Size = new System.Drawing.Size(49, 13);
             this.hotkeysLabel.TabIndex = 2;
@@ -82,7 +83,7 @@ namespace SwitchAudioDevices
             // 
             // hotkeysTextBox
             // 
-            this.hotkeysTextBox.Location = new System.Drawing.Point(68, 58);
+            this.hotkeysTextBox.Location = new System.Drawing.Point(67, 81);
             this.hotkeysTextBox.Name = "hotkeysTextBox";
             this.hotkeysTextBox.ReadOnly = true;
             this.hotkeysTextBox.Size = new System.Drawing.Size(139, 20);
@@ -90,11 +91,22 @@ namespace SwitchAudioDevices
             this.hotkeysTextBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.hotkeysTextBox_MouseClick);
             this.hotkeysTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.hotkeysTextBox_KeyUp);
             // 
+            // startupCheckBox
+            // 
+            this.startupCheckBox.AutoSize = true;
+            this.startupCheckBox.Location = new System.Drawing.Point(12, 12);
+            this.startupCheckBox.Name = "startupCheckBox";
+            this.startupCheckBox.Size = new System.Drawing.Size(93, 17);
+            this.startupCheckBox.TabIndex = 4;
+            this.startupCheckBox.Text = "Run at startup";
+            this.startupCheckBox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.startupCheckBox);
             this.Controls.Add(this.hotkeysTextBox);
             this.Controls.Add(this.hotkeysLabel);
             this.Controls.Add(this.doubleClickCheckBox);
@@ -115,6 +127,7 @@ namespace SwitchAudioDevices
         private Gma.UserActivityMonitor.GlobalEventProvider globalEventProvider;
         private Label hotkeysLabel;
         private TextBox hotkeysTextBox;
+        private CheckBox startupCheckBox;
     }
 }
 
