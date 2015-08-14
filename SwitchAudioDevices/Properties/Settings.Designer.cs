@@ -58,5 +58,17 @@ namespace SwitchAudioDevices.Properties {
                 this["Hotkey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Startup {
+            get {
+                return ((bool)(this["Startup"]));
+            }
+            set {
+                this["Startup"] = value;
+            }
+        }
     }
 }
