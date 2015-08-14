@@ -74,20 +74,10 @@
     <StartupObject>SwitchAudioDevices.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gma.UserActivityMonitor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0bd8b79f92cc7463, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Resources\Gma.UserActivityMonitor.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Form1.cs">
@@ -129,7 +119,6 @@
     <Content Include="EndPointController.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Gma.UserActivityMonitor.dll" />
     <None Include="Resources\speaker.ico" />
   </ItemGroup>
   <ItemGroup>
