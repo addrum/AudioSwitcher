@@ -70,6 +70,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SwitchAudioDevices.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Gma.UserActivityMonitor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0bd8b79f92cc7463, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
