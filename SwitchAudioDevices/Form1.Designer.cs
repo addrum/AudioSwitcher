@@ -89,6 +89,7 @@ namespace SwitchAudioDevices
             this.hotkeysTextBox.TabIndex = 3;
             this.hotkeysTextBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.hotkeysTextBox_MouseClick);
             this.hotkeysTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.hotkeysTextBox_KeyUp);
+            this.hotkeysTextBox.Leave += new System.EventHandler(this.hotkeysTextBox_Leave);
             // 
             // startupCheckBox
             // 

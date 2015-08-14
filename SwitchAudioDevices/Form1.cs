@@ -7,9 +7,9 @@ namespace SwitchAudioDevices
     public partial class Form1 : Form 
     {
         private readonly ContextMenu _menu;
-        KeysConverter converter = new KeysConverter();
         private bool DoubleClickToCycle { get; set; }
         private bool GlobalHotkeys { get; set; }
+        private bool ChangingHotkeys { get; set; }
 
         // http://stackoverflow.com/a/27309185/1860436
         private KeyboardHook _hook = new KeyboardHook();
@@ -28,7 +28,7 @@ namespace SwitchAudioDevices
             // register the control + alt + F12 combination as hot key
             var hotkeys = Settings.Default.Hotkey.Split(',');
             ModifierKeys modifiers = 0;
-            Keys keys = Keys.None;
+            var keys = Keys.None;
                 foreach (var hotkey in hotkeys)
                 {
                     switch (hotkey)
@@ -46,7 +46,14 @@ namespace SwitchAudioDevices
                             modifiers |= global::ModifierKeys.Win;
                             break;
                         default:
-                            keys += Convert.ToChar(hotkey);
+                            try
+                            {
+                                keys += Convert.ToChar(hotkey);
+                            }
+                            catch
+                            {
+                                // ignored
+                            }
                             break;
                     }
                 }
@@ -148,7 +155,7 @@ namespace SwitchAudioDevices
 
         void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
-             if (!GlobalHotkeys) return;
+             if (!GlobalHotkeys || ChangingHotkeys) return;
              Program.SelectDevice(Program.NextId());
              ResetDeviceList();
              ShowBalloonTip();
@@ -235,8 +242,14 @@ namespace SwitchAudioDevices
 
         private void hotkeysTextBox_MouseClick(object sender, MouseEventArgs e)
         {
+            ChangingHotkeys = true;
             hotkeysTextBox.Text = "";
             Settings.Default.Hotkey = "";
+        }
+
+        private void hotkeysTextBox_Leave(object sender, EventArgs e)
+        {
+            ChangingHotkeys = false;
         }
     }
 }
