@@ -18,7 +18,7 @@ namespace SwitchAudioDevices
             InitializeComponent();
             _menu = new ContextMenu();
             NotifyIcon.ContextMenu = _menu;
-            Program.PopulateDeviceList(_menu);
+            PopulateDeviceList(_menu);
             AddPreferencesAndExit();
             PresetValuesOfSettings();
 
@@ -59,6 +59,29 @@ namespace SwitchAudioDevices
             }
         }
 
+        private static void PopulateDeviceList(ContextMenu menu)
+        {
+
+            // All all active devices
+            foreach (var device in Program.GetDevices())
+            {
+                var id = device.Item1;
+                var deviceName = device.Item2;
+                var isInUse = device.Item3;
+
+                var item = new MenuItem { Checked = isInUse, Text = deviceName };
+                item.Click += (s, a) => Program.SelectDevice(id);
+
+                menu.MenuItems.Add(item);
+            }
+        }
+
+        private void DeviceClick(object sender, EventArgs e, int id)
+        {
+            Program.SelectDevice(id);
+            ResetDeviceList();
+        }
+
         private void AddPreferencesAndExit()
         {
             // Add preferences
@@ -80,6 +103,13 @@ namespace SwitchAudioDevices
             globalHotkeysCheckBox.Checked = Settings.Default.GlobalHotkeys;
             var hotkeys = Settings.Default.Hotkey.Replace(",", " + ");
             hotkeysTextBox.Text = hotkeys;
+        }
+
+        private void ResetDeviceList()
+        {
+            _menu.MenuItems.Clear();
+            PopulateDeviceList(_menu);
+            AddPreferencesAndExit();
         }
 
         private void OpenPreferences(object sender, EventArgs e)
@@ -112,6 +142,7 @@ namespace SwitchAudioDevices
         {
             if (!DoubleClickToCycle) return;
             Program.SelectDevice(Program.NextId());
+            ResetDeviceList();
             ShowBalloonTip();
         }
 
@@ -125,6 +156,7 @@ namespace SwitchAudioDevices
         {
              if (!GlobalHotkeys) return;
              Program.SelectDevice(Program.NextId());
+             ResetDeviceList();
              ShowBalloonTip();
         }
 

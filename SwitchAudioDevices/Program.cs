@@ -45,7 +45,7 @@ namespace SwitchAudioDevices
 
         #region EndPointController.exe interaction
 
-        private static IEnumerable<Tuple<int, string, bool>> GetDevices()
+        public static IEnumerable<Tuple<int, string, bool>> GetDevices()
         {
             _deviceCount = 0;
             var p = new Process
