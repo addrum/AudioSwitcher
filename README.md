@@ -10,5 +10,5 @@ Planned features:
 
 
 Based on work by marcjoha: https://github.com/marcjoha/AudioSwitcher
-and gmamaladze: https://github.com/gmamaladze/globalmousekeyhook
+and AaronLS: http://stackoverflow.com/a/27309185/1860436
 
