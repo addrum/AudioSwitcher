@@ -137,6 +137,7 @@ namespace SwitchAudioDevices
             this.Controls.Add(this.globalHotkeysCheckBox);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ClientSizeChanged += new System.EventHandler(this.Form1_ClientSizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();

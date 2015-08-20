@@ -70,13 +70,19 @@ namespace SwitchAudioDevices
         private void PresetValuesOfSettings()
         {
             doubleClickCheckBox.Checked = Settings.Default.DoubleClickToCycle;
+            DoubleClickToCycle = Settings.Default.DoubleClickToCycle;
+
             globalHotkeysCheckBox.Checked = Settings.Default.GlobalHotkeys;
+            GlobalHotkeys = Settings.Default.GlobalHotkeys;
+
             var modifierKeys = Settings.Default.ModifierKeys.Replace(",", " + ");
             var keys = Settings.Default.Keys.ToString();
             var hotkeys =  keys.Replace(",", " + ");
             var finalKeys = modifierKeys + " + " + hotkeys;
             hotkeysTextBox.Text = finalKeys;
+
             minimiseCheckBox.Checked = Settings.Default.MinimiseToTray;
+            MinimiseToTray = Settings.Default.MinimiseToTray;
         }
 
         private void ResetDeviceList()
@@ -255,6 +261,13 @@ namespace SwitchAudioDevices
             Settings.Default.Save();
             Program.RegisterHotkeys(_hook);
             saveButton.Enabled = false;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!MinimiseToTray) return;
+            e.Cancel = true;
+            Hide();
         }
     }
 }
