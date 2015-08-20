@@ -75,16 +75,15 @@ public sealed class KeyboardHook : IDisposable
     /// </summary>
     /// <param name="modifier">The modifiers that are associated with the hot key.</param>
     /// <param name="key">The key itself that is associated with the hot key.</param>
-    public void RegisterHotKey(ModifierKeys modifier, Keys key)
+    public bool RegisterHotKey(ModifierKeys modifier, Keys key)
     {
         // increment the counter.
         _currentId = _currentId + 1;
 
         // register the hot key.
-        if (!RegisterHotKey(_window.Handle, _currentId, (uint)modifier, (uint)key))
-            throw new InvalidOperationException("Couldn’t register the hot key.");
-    }
-
+        return RegisterHotKey(_window.Handle, _currentId, (uint) modifier, (uint) key);
+    }    
+    
     /// <summary>
     /// A hot key has been pressed.
     /// </summary>

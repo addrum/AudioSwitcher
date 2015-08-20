@@ -13,7 +13,7 @@ namespace SwitchAudioDevices
         private bool MinimiseToTray { get; set; }
 
         // http://stackoverflow.com/a/27309185/1860436
-        private static readonly KeyboardHook _hook = new KeyboardHook();
+        private static readonly KeyboardHook Hook = new KeyboardHook();
 
         public Form1()
         {
@@ -25,8 +25,8 @@ namespace SwitchAudioDevices
             PresetValuesOfSettings();
 
             // reigster the event that is fired after the key press
-            _hook.KeyPressed += hook_KeyPressed;
-            Program.RegisterHotkeys(_hook);
+            Hook.KeyPressed += hook_KeyPressed;
+            Program.RegisterHotkeys(Hook);
         }
 
         private static void PopulateDeviceList(ContextMenu menu)
@@ -179,10 +179,16 @@ namespace SwitchAudioDevices
                 AppendToHotkeysTextBox("SHIFT");
                 SaveModifierKeysSetting("SHIFT");
             }
+            else if (e.KeyCode == Keys.LWin && !hotkeysTextBox.Text.Contains("WIN"))
+            {
+                e.Handled = true;
+                AppendToHotkeysTextBox("WIN");
+                SaveModifierKeysSetting("WIN");
+            }
             else if (e.KeyCode == Keys.Space && !hotkeysTextBox.Text.Contains("SPACE"))
             {
                 AppendToHotkeysTextBox("SPACE");
-                SaveModifierKeysSetting(e.KeyValue.ToString());
+                SaveHotkeySettings(e.KeyCode);
             }
             else if (!hotkeysTextBox.Text.Contains(e.KeyCode.ToString()))
             {
@@ -190,7 +196,7 @@ namespace SwitchAudioDevices
                 if (hotkeysTextBoxText.Length > 0)
                 {
                     if (hotkeysTextBoxText.EndsWith("ALT") || hotkeysTextBoxText.EndsWith("SHIFT") ||
-                        hotkeysTextBoxText.EndsWith("CTRL"))
+                        hotkeysTextBoxText.EndsWith("CTRL") || hotkeysTextBoxText.EndsWith("SPACE") || hotkeysTextBoxText.EndsWith("WIN"))
                     {
                         hotkeysTextBox.Text = hotkeysTextBoxText + " + " + e.KeyCode;
                     }
@@ -259,7 +265,7 @@ namespace SwitchAudioDevices
         private void saveButton_Click(object sender, EventArgs e)
         {
             Settings.Default.Save();
-            Program.RegisterHotkeys(_hook);
+            Program.RegisterHotkeys(Hook);
             saveButton.Enabled = false;
         }
 
@@ -268,6 +274,14 @@ namespace SwitchAudioDevices
             if (!MinimiseToTray) return;
             e.Cancel = true;
             Hide();
+        }
+
+        private void hotkeysTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.LWin)
+            {
+                e.Handled = true;
+            }
         }
     }
 }

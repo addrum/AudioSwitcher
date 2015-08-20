@@ -49,7 +49,9 @@ namespace SwitchAudioDevices
 
             var key = Settings.Default.Keys;
 
-            hook.RegisterHotKey(modifiers, key);
+            if (hook.RegisterHotKey(modifiers, key))
+                MessageBox.Show("Couldn't register the hotkey", "Hotkey Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             //hook.RegisterHotKey(ModifierKeys.Control | ModifierKeys.Alt, Keys.F12);
         }
         
