@@ -8,10 +8,16 @@
     <Setting Name="DoubleClickToCycle" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Hotkey" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CTRL,ALT,87</Value>
+    <Setting Name="ModifierKeys" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CTRL,ALT</Value>
     </Setting>
     <Setting Name="Startup" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Keys" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">87</Value>
+    </Setting>
+    <Setting Name="MinimiseToTray" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

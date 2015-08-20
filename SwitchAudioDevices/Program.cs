@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Forms;
+using SwitchAudioDevices.Properties;
 
 namespace SwitchAudioDevices
 {
@@ -20,6 +21,36 @@ namespace SwitchAudioDevices
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+        }
+
+        public static void RegisterHotkeys(KeyboardHook hook)
+        {
+            // register the control + alt + F12 combination as hot key
+            var hotkeys = Settings.Default.ModifierKeys.Split(',');
+            ModifierKeys modifiers = 0;
+            foreach (var hotkey in hotkeys)
+            {
+                switch (hotkey)
+                {
+                    case "CTRL":
+                        modifiers |= ModifierKeys.Control;
+                        break;
+                    case "ALT":
+                        modifiers |= ModifierKeys.Alt;
+                        break;
+                    case "SHIFT":
+                        modifiers |= ModifierKeys.Shift;
+                        break;
+                    case "WIN":
+                        modifiers |= ModifierKeys.Win;
+                        break;
+                }
+            }
+
+            var key = Settings.Default.Keys;
+
+            hook.RegisterHotKey(modifiers, key);
+            //hook.RegisterHotKey(ModifierKeys.Control | ModifierKeys.Alt, Keys.F12);
         }
         
         #region Tray events

@@ -10,9 +10,10 @@ namespace SwitchAudioDevices
         private bool DoubleClickToCycle { get; set; }
         private bool GlobalHotkeys { get; set; }
         private bool ChangingHotkeys { get; set; }
+        private bool MinimiseToTray { get; set; }
 
         // http://stackoverflow.com/a/27309185/1860436
-        private KeyboardHook _hook = new KeyboardHook();
+        private static readonly KeyboardHook _hook = new KeyboardHook();
 
         public Form1()
         {
@@ -25,39 +26,7 @@ namespace SwitchAudioDevices
 
             // reigster the event that is fired after the key press
             _hook.KeyPressed += hook_KeyPressed;
-            // register the control + alt + F12 combination as hot key
-            var hotkeys = Settings.Default.Hotkey.Split(',');
-            ModifierKeys modifiers = 0;
-            var keys = Keys.None;
-                foreach (var hotkey in hotkeys)
-                {
-                    switch (hotkey)
-                    {
-                        case "CTRL":
-                            modifiers |= global::ModifierKeys.Control;
-                            break;
-                        case "ALT":
-                            modifiers |= global::ModifierKeys.Alt;
-                            break;
-                        case "SHIFT":
-                            modifiers |= global::ModifierKeys.Shift;
-                            break;
-                        case "WIN":
-                            modifiers |= global::ModifierKeys.Win;
-                            break;
-                        default:
-                            try
-                            {
-                                keys += Convert.ToChar(hotkey);
-                            }
-                            catch
-                            {
-                                // ignored
-                            }
-                            break;
-                    }
-                }
-                _hook.RegisterHotKey(modifiers, keys);
+            Program.RegisterHotkeys(_hook);
         }
 
         private static void PopulateDeviceList(ContextMenu menu)
@@ -102,8 +71,12 @@ namespace SwitchAudioDevices
         {
             doubleClickCheckBox.Checked = Settings.Default.DoubleClickToCycle;
             globalHotkeysCheckBox.Checked = Settings.Default.GlobalHotkeys;
-            var hotkeys = Settings.Default.Hotkey.Replace(",", " + ");
-            hotkeysTextBox.Text = hotkeys;
+            var modifierKeys = Settings.Default.ModifierKeys.Replace(",", " + ");
+            var keys = Settings.Default.Keys.ToString();
+            var hotkeys =  keys.Replace(",", " + ");
+            var finalKeys = modifierKeys + " + " + hotkeys;
+            hotkeysTextBox.Text = finalKeys;
+            minimiseCheckBox.Checked = Settings.Default.MinimiseToTray;
         }
 
         private void ResetDeviceList()
@@ -188,27 +161,39 @@ namespace SwitchAudioDevices
             if ((e.Control || e.KeyCode == Keys.ControlKey) && !hotkeysTextBox.Text.Contains("CTRL"))
             {
                 AppendToHotkeysTextBox("CTRL");
-                SaveHotkeysSetting("CTRL");
+                SaveModifierKeysSetting("CTRL");
             }
             else if (e.Alt && !hotkeysTextBox.Text.Contains("ALT"))
             {
                 AppendToHotkeysTextBox("ALT");
-                SaveHotkeysSetting("ALT");
+                SaveModifierKeysSetting("ALT");
             }
             else if ((e.Shift || e.KeyCode == Keys.ShiftKey) && !hotkeysTextBox.Text.Contains("SHIFT"))
             {
                 AppendToHotkeysTextBox("SHIFT");
-                SaveHotkeysSetting("SHIFT");
+                SaveModifierKeysSetting("SHIFT");
             }
             else if (e.KeyCode == Keys.Space && !hotkeysTextBox.Text.Contains("SPACE"))
             {
                 AppendToHotkeysTextBox("SPACE");
-                SaveHotkeysSetting(e.KeyValue.ToString());
+                SaveModifierKeysSetting(e.KeyValue.ToString());
             }
             else if (!hotkeysTextBox.Text.Contains(e.KeyCode.ToString()))
             {
-                AppendToHotkeysTextBox(e.KeyCode.ToString());
-                SaveHotkeysSetting(e.KeyCode.ToString());
+                var hotkeysTextBoxText = hotkeysTextBox.Text;
+                if (hotkeysTextBoxText.Length > 0)
+                {
+                    if (hotkeysTextBoxText.EndsWith("ALT") || hotkeysTextBoxText.EndsWith("SHIFT") ||
+                        hotkeysTextBoxText.EndsWith("CTRL"))
+                    {
+                        hotkeysTextBox.Text = hotkeysTextBoxText + " + " + e.KeyCode;
+                    }
+                    else
+                    {
+                        hotkeysTextBox.Text = hotkeysTextBoxText.Remove(hotkeysTextBoxText.Length - 1, 1) + e.KeyCode;
+                    }
+                }
+                SaveHotkeySettings(e.KeyCode);
             }
 
             /*if (hotkeysTextBox.Text.Length > 1 && !hotkeysTextBox.Text.EndsWith(" "))
@@ -226,30 +211,50 @@ namespace SwitchAudioDevices
             hotkeysTextBox.Text += value;
         }
 
-        private void SaveHotkeysSetting(string key)
+        private static void SaveModifierKeysSetting(string key)
         {
-            if (Settings.Default.Hotkey.Contains(key)) return;
-            if (string.IsNullOrEmpty(Settings.Default.Hotkey))
+            if (Settings.Default.ModifierKeys.Contains(key)) return;
+            if (string.IsNullOrEmpty(Settings.Default.ModifierKeys))
             {
-                Settings.Default.Hotkey += key;
+                Settings.Default.ModifierKeys += key;
             }
             else
             {
-                Settings.Default.Hotkey += "," + key;
+                Settings.Default.ModifierKeys += "," + key;
             }
-            Settings.Default.Save();
+        }
+
+        private static void SaveHotkeySettings(Keys key)
+        {
+            if (Settings.Default.Keys == key) return;
+            Settings.Default.Keys = key;
         }
 
         private void hotkeysTextBox_MouseClick(object sender, MouseEventArgs e)
         {
             ChangingHotkeys = true;
             hotkeysTextBox.Text = "";
-            Settings.Default.Hotkey = "";
+            Settings.Default.ModifierKeys = "";
+            saveButton.Enabled = true;
         }
 
         private void hotkeysTextBox_Leave(object sender, EventArgs e)
         {
             ChangingHotkeys = false;
+        }
+
+        private void minimiseCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            MinimiseToTray = minimiseCheckBox.Checked;
+            Settings.Default.MinimiseToTray = minimiseCheckBox.Checked;
+            Settings.Default.Save();
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            Settings.Default.Save();
+            Program.RegisterHotkeys(_hook);
+            saveButton.Enabled = false;
         }
     }
 }

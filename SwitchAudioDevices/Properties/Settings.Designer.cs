@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Windows.Forms;
+
 namespace SwitchAudioDevices.Properties {
     
     
@@ -49,13 +51,13 @@ namespace SwitchAudioDevices.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("CTRL,ALT,87")]
-        public string Hotkey {
+        [global::System.Configuration.DefaultSettingValueAttribute("CTRL,ALT")]
+        public string ModifierKeys {
             get {
-                return ((string)(this["Hotkey"]));
+                return ((string)(this["ModifierKeys"]));
             }
             set {
-                this["Hotkey"] = value;
+                this["ModifierKeys"] = value;
             }
         }
         
@@ -68,6 +70,30 @@ namespace SwitchAudioDevices.Properties {
             }
             set {
                 this["Startup"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("87")]
+        public Keys Keys {
+            get {
+                return ((Keys)(this["Keys"]));
+            }
+            set {
+                this["Keys"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MinimiseToTray {
+            get {
+                return ((bool)(this["MinimiseToTray"]));
+            }
+            set {
+                this["MinimiseToTray"] = value;
             }
         }
     }

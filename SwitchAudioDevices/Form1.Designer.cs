@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
 namespace SwitchAudioDevices
 {
@@ -40,6 +39,8 @@ namespace SwitchAudioDevices
             this.hotkeysLabel = new System.Windows.Forms.Label();
             this.hotkeysTextBox = new System.Windows.Forms.TextBox();
             this.startupCheckBox = new System.Windows.Forms.CheckBox();
+            this.minimiseCheckBox = new System.Windows.Forms.CheckBox();
+            this.saveButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // NotifyIcon
@@ -54,9 +55,9 @@ namespace SwitchAudioDevices
             this.globalHotkeysCheckBox.AutoSize = true;
             this.globalHotkeysCheckBox.Location = new System.Drawing.Point(12, 58);
             this.globalHotkeysCheckBox.Name = "globalHotkeysCheckBox";
-            this.globalHotkeysCheckBox.Size = new System.Drawing.Size(98, 17);
+            this.globalHotkeysCheckBox.Size = new System.Drawing.Size(96, 17);
             this.globalHotkeysCheckBox.TabIndex = 0;
-            this.globalHotkeysCheckBox.Text = "Global Hotkeys";
+            this.globalHotkeysCheckBox.Text = "Global hotkeys";
             this.globalHotkeysCheckBox.UseVisualStyleBackColor = true;
             this.globalHotkeysCheckBox.CheckedChanged += new System.EventHandler(this.globalHotkeysCheckBox_CheckedChanged);
             // 
@@ -74,7 +75,7 @@ namespace SwitchAudioDevices
             // hotkeysLabel
             // 
             this.hotkeysLabel.AutoSize = true;
-            this.hotkeysLabel.Location = new System.Drawing.Point(9, 84);
+            this.hotkeysLabel.Location = new System.Drawing.Point(9, 108);
             this.hotkeysLabel.Name = "hotkeysLabel";
             this.hotkeysLabel.Size = new System.Drawing.Size(49, 13);
             this.hotkeysLabel.TabIndex = 2;
@@ -82,7 +83,7 @@ namespace SwitchAudioDevices
             // 
             // hotkeysTextBox
             // 
-            this.hotkeysTextBox.Location = new System.Drawing.Point(67, 81);
+            this.hotkeysTextBox.Location = new System.Drawing.Point(67, 105);
             this.hotkeysTextBox.Name = "hotkeysTextBox";
             this.hotkeysTextBox.ReadOnly = true;
             this.hotkeysTextBox.Size = new System.Drawing.Size(139, 20);
@@ -101,11 +102,34 @@ namespace SwitchAudioDevices
             this.startupCheckBox.Text = "Run at startup";
             this.startupCheckBox.UseVisualStyleBackColor = true;
             // 
+            // minimiseCheckBox
+            // 
+            this.minimiseCheckBox.AutoSize = true;
+            this.minimiseCheckBox.Location = new System.Drawing.Point(12, 82);
+            this.minimiseCheckBox.Name = "minimiseCheckBox";
+            this.minimiseCheckBox.Size = new System.Drawing.Size(98, 17);
+            this.minimiseCheckBox.TabIndex = 5;
+            this.minimiseCheckBox.Text = "Minimise to tray";
+            this.minimiseCheckBox.UseVisualStyleBackColor = true;
+            this.minimiseCheckBox.CheckedChanged += new System.EventHandler(this.minimiseCheckBox_CheckedChanged);
+            // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(213, 105);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(59, 20);
+            this.saveButton.TabIndex = 6;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.minimiseCheckBox);
             this.Controls.Add(this.startupCheckBox);
             this.Controls.Add(this.hotkeysTextBox);
             this.Controls.Add(this.hotkeysLabel);
@@ -127,6 +151,8 @@ namespace SwitchAudioDevices
         private Label hotkeysLabel;
         private TextBox hotkeysTextBox;
         private CheckBox startupCheckBox;
+        private CheckBox minimiseCheckBox;
+        private Button saveButton;
     }
 }
 
