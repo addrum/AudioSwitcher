@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace SwitchAudioDevices
@@ -20,6 +21,13 @@ namespace SwitchAudioDevices
             {
                 components.Dispose();
             }
+
+            if (ptrHook != IntPtr.Zero)
+            {
+                UnhookWindowsHookEx(ptrHook);
+                ptrHook = IntPtr.Zero;
+            }
+
             base.Dispose(disposing);
         }
 
@@ -89,7 +97,6 @@ namespace SwitchAudioDevices
             this.hotkeysTextBox.Size = new System.Drawing.Size(139, 20);
             this.hotkeysTextBox.TabIndex = 3;
             this.hotkeysTextBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.hotkeysTextBox_MouseClick);
-            this.hotkeysTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.hotkeysTextBox_KeyDown);
             this.hotkeysTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.hotkeysTextBox_KeyUp);
             this.hotkeysTextBox.Leave += new System.EventHandler(this.hotkeysTextBox_Leave);
             // 

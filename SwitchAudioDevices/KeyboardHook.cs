@@ -75,13 +75,21 @@ public sealed class KeyboardHook : IDisposable
     /// </summary>
     /// <param name="modifier">The modifiers that are associated with the hot key.</param>
     /// <param name="key">The key itself that is associated with the hot key.</param>
-    public bool RegisterHotKey(ModifierKeys modifier, Keys key)
+    public void RegisterHotKey(ModifierKeys modifier, Keys key)
     {
         // increment the counter.
         _currentId = _currentId + 1;
 
         // register the hot key.
-        return RegisterHotKey(_window.Handle, _currentId, (uint) modifier, (uint) key);
+        try
+        {
+            RegisterHotKey(_window.Handle, _currentId, (uint) modifier, (uint) key);
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show(e.ToString(), "Hotkey Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+        }
     }    
     
     /// <summary>

@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
+using SwitchAudioDevices;
 using SwitchAudioDevices.Properties;
 
 namespace SwitchAudioDevices
@@ -15,11 +20,49 @@ namespace SwitchAudioDevices
         // http://stackoverflow.com/a/27309185/1860436
         private static readonly KeyboardHook Hook = new KeyboardHook();
 
+        #region disable keys
+
+        // Structure contain information about low-level keyboard input event
+        [StructLayout(LayoutKind.Sequential)]
+        private struct KBDLLHOOKSTRUCT
+        {
+            public Keys key;
+            public int scanCode;
+            public int flags;
+            public int time;
+            public IntPtr extra;
+        }
+        
+        //System level functions to be used for hook and unhook keyboard input
+        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr SetWindowsHookEx(int id, LowLevelKeyboardProc callback, IntPtr hMod, uint dwThreadId);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool UnhookWindowsHookEx(IntPtr hook);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr CallNextHookEx(IntPtr hook, int nCode, IntPtr wp, IntPtr lp);
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr GetModuleHandle(string name);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern short GetAsyncKeyState(Keys key);
+        
+        
+        //Declaring Global objects
+        private IntPtr ptrHook;
+        private LowLevelKeyboardProc objKeyboardProcess; 
+
+        #endregion
+
         public Form1()
         {
+            ProcessModule objCurModule = Process.GetCurrentProcess().MainModule;
+            objKeyboardProcess = CaptureKey;
+            ptrHook = SetWindowsHookEx(13, objKeyboardProcess, GetModuleHandle(objCurModule.ModuleName), 0);
+
             InitializeComponent();
             _menu = new ContextMenu();
             NotifyIcon.ContextMenu = _menu;
+
             PopulateDeviceList(_menu);
             AddPreferencesAndExit();
             PresetValuesOfSettings();
@@ -27,6 +70,24 @@ namespace SwitchAudioDevices
             // reigster the event that is fired after the key press
             Hook.KeyPressed += hook_KeyPressed;
             Program.RegisterHotkeys(Hook);
+        }
+
+        private IntPtr CaptureKey(int nCode, IntPtr wp, IntPtr lp)
+        {
+            if (nCode >= 0)
+            {
+                KBDLLHOOKSTRUCT objKeyInfo = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lp, typeof(KBDLLHOOKSTRUCT));
+
+                if (ChangingHotkeys)
+                {
+                    if (objKeyInfo.key == Keys.RWin || objKeyInfo.key == Keys.LWin) // Disabling Windows keys
+                    {
+                        AppendToHotkeysTextBox(objKeyInfo.key.ToString());
+                        return (IntPtr) 1;
+                    }
+                }
+            }
+            return CallNextHookEx(ptrHook, nCode, wp, lp);
         }
 
         private static void PopulateDeviceList(ContextMenu menu)
@@ -44,12 +105,6 @@ namespace SwitchAudioDevices
 
                 menu.MenuItems.Add(item);
             }
-        }
-
-        private void DeviceClick(object sender, EventArgs e, int id)
-        {
-            Program.SelectDevice(id);
-            ResetDeviceList();
         }
 
         private void AddPreferencesAndExit()
@@ -118,40 +173,12 @@ namespace SwitchAudioDevices
             Application.Exit();
         }
 
-        private void NotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (!DoubleClickToCycle) return;
-            Program.SelectDevice(Program.NextId());
-            ResetDeviceList();
-            ShowBalloonTip();
-        }
-
-        private void Form1_ClientSizeChanged(object sender, EventArgs e)
-        {
-            if (WindowState == FormWindowState.Minimized)
-                Visible = false;
-        }
-
         void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
              if (!GlobalHotkeys || ChangingHotkeys) return;
              Program.SelectDevice(Program.NextId());
              ResetDeviceList();
              ShowBalloonTip();
-        }
-
-        private void doubleClickCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            DoubleClickToCycle = doubleClickCheckBox.Checked;
-            Settings.Default.DoubleClickToCycle = doubleClickCheckBox.Checked;
-            Settings.Default.Save();
-        }
-
-        private void globalHotkeysCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            GlobalHotkeys = globalHotkeysCheckBox.Checked;
-            Settings.Default.GlobalHotkeys = globalHotkeysCheckBox.Checked;
-            Settings.Default.Save();
         }
 
         private void ShowBalloonTip()
@@ -161,61 +188,11 @@ namespace SwitchAudioDevices
             NotifyIcon.ShowBalloonTip(1000, "Audio Device Changed", "Device changed to: " + Program.GetCurrentPlaybackDevice(), ToolTipIcon.None);
         }
 
-        // ReSharper disable LocalizableElement
-        private void hotkeysTextBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            if ((e.Control || e.KeyCode == Keys.ControlKey) && !hotkeysTextBox.Text.Contains("CTRL"))
-            {
-                AppendToHotkeysTextBox("CTRL");
-                SaveModifierKeysSetting("CTRL");
-            }
-            else if (e.Alt && !hotkeysTextBox.Text.Contains("ALT"))
-            {
-                AppendToHotkeysTextBox("ALT");
-                SaveModifierKeysSetting("ALT");
-            }
-            else if ((e.Shift || e.KeyCode == Keys.ShiftKey) && !hotkeysTextBox.Text.Contains("SHIFT"))
-            {
-                AppendToHotkeysTextBox("SHIFT");
-                SaveModifierKeysSetting("SHIFT");
-            }
-            else if (e.KeyCode == Keys.LWin && !hotkeysTextBox.Text.Contains("WIN"))
-            {
-                e.Handled = true;
-                AppendToHotkeysTextBox("WIN");
-                SaveModifierKeysSetting("WIN");
-            }
-            else if (e.KeyCode == Keys.Space && !hotkeysTextBox.Text.Contains("SPACE"))
-            {
-                AppendToHotkeysTextBox("SPACE");
-                SaveHotkeySettings(e.KeyCode);
-            }
-            else if (!hotkeysTextBox.Text.Contains(e.KeyCode.ToString()))
-            {
-                var hotkeysTextBoxText = hotkeysTextBox.Text;
-                if (hotkeysTextBoxText.Length > 0)
-                {
-                    if (hotkeysTextBoxText.EndsWith("ALT") || hotkeysTextBoxText.EndsWith("SHIFT") ||
-                        hotkeysTextBoxText.EndsWith("CTRL") || hotkeysTextBoxText.EndsWith("SPACE") || hotkeysTextBoxText.EndsWith("WIN"))
-                    {
-                        hotkeysTextBox.Text = hotkeysTextBoxText + " + " + e.KeyCode;
-                    }
-                    else
-                    {
-                        hotkeysTextBox.Text = hotkeysTextBoxText.Remove(hotkeysTextBoxText.Length - 1, 1) + e.KeyCode;
-                    }
-                }
-                SaveHotkeySettings(e.KeyCode);
-            }
-
-            /*if (hotkeysTextBox.Text.Length > 1 && !hotkeysTextBox.Text.EndsWith(" "))
-            {
-                hotkeysTextBox.Text += " + ";
-            }*/
-        }
-
         private void AppendToHotkeysTextBox(string value)
         {
+            var keys = hotkeysTextBox.Text.Replace(" + ", ",");
+            var hotkeys = keys.Split(',');
+            if (hotkeys.Contains(value)) return;
             if (hotkeysTextBox.Text.Length > 0)
             {
                 hotkeysTextBox.Text += " + ";
@@ -242,6 +219,68 @@ namespace SwitchAudioDevices
             Settings.Default.Keys = key;
         }
 
+        #region form elements
+
+        private void NotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (!DoubleClickToCycle) return;
+            Program.SelectDevice(Program.NextId());
+            ResetDeviceList();
+            ShowBalloonTip();
+        }
+
+        private void Form1_ClientSizeChanged(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+                Visible = false;
+        }
+
+        // ReSharper disable LocalizableElement
+        private void hotkeysTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((e.Control || e.KeyCode == Keys.ControlKey || e.KeyCode.ToString().Equals("ControlKey")) && !hotkeysTextBox.Text.Contains("CTRL"))
+            {
+                AppendToHotkeysTextBox("CTRL");
+                SaveModifierKeysSetting("CTRL");
+            }
+            else if (e.Alt && !hotkeysTextBox.Text.Contains("ALT"))
+            {
+                AppendToHotkeysTextBox("ALT");
+                SaveModifierKeysSetting("ALT");
+            }
+            else if ((e.Shift || e.KeyCode == Keys.ShiftKey) && !hotkeysTextBox.Text.Contains("SHIFT"))
+            {
+                AppendToHotkeysTextBox("SHIFT");
+                SaveModifierKeysSetting("SHIFT");
+            }
+            else if (e.KeyCode == Keys.LWin && !hotkeysTextBox.Text.Contains("WIN"))
+            {
+                e.Handled = true;
+                AppendToHotkeysTextBox("WIN");
+                SaveModifierKeysSetting("WIN");
+            }
+            else if (e.KeyCode == Keys.Space && !hotkeysTextBox.Text.Contains("SPACE"))
+            {
+                AppendToHotkeysTextBox("SPACE");
+                SaveHotkeySettings(e.KeyCode);
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+
+            }
+            else 
+            {
+                AppendToHotkeysTextBox(e.KeyCode.ToString());
+                SaveHotkeySettings(e.KeyCode);
+            }
+            e.Handled = true;
+
+            /*if (hotkeysTextBox.Text.Length > 1 && !hotkeysTextBox.Text.EndsWith(" "))
+            {
+                hotkeysTextBox.Text += " + ";
+            }*/
+        }
+
         private void hotkeysTextBox_MouseClick(object sender, MouseEventArgs e)
         {
             ChangingHotkeys = true;
@@ -262,6 +301,20 @@ namespace SwitchAudioDevices
             Settings.Default.Save();
         }
 
+        private void doubleClickCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            DoubleClickToCycle = doubleClickCheckBox.Checked;
+            Settings.Default.DoubleClickToCycle = doubleClickCheckBox.Checked;
+            Settings.Default.Save();
+        }
+
+        private void globalHotkeysCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            GlobalHotkeys = globalHotkeysCheckBox.Checked;
+            Settings.Default.GlobalHotkeys = globalHotkeysCheckBox.Checked;
+            Settings.Default.Save();
+        }
+
         private void saveButton_Click(object sender, EventArgs e)
         {
             Settings.Default.Save();
@@ -276,12 +329,7 @@ namespace SwitchAudioDevices
             Hide();
         }
 
-        private void hotkeysTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.LWin)
-            {
-                e.Handled = true;
-            }
-        }
+        #endregion
+
     }
 }
