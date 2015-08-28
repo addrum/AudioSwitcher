@@ -119,7 +119,7 @@
     <Content Include="EndPointController.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\speaker.ico" />
+    <Content Include="Resources\speaker.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.1">

@@ -21,7 +21,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_58F1313E654C4238AF6F9A28BA644D52"
+        "MsmKey" = "8:_1FA206C35DDF45818CFB29E56E284054"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -132,7 +132,7 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_58F1313E654C4238AF6F9A28BA644D52"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1FA206C35DDF45818CFB29E56E284054"
             {
             "SourcePath" = "8:..\\SwitchAudioDevices\\Resources\\speaker.ico"
             "TargetName" = "8:speaker.ico"
@@ -257,7 +257,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Tray application for Switching Audio Devices with hotkeys"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_58F1313E654C4238AF6F9A28BA644D52"
+        "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -371,7 +371,7 @@
             "Target" = "8:_19382C5AFD6E4FDB8723AB7DB7DE9001"
             "Folder" = "8:_88448DE23F104DC8B17DE70C175EEFA5"
             "WorkingFolder" = "8:_CDC543CA3E0746AB9D8C6BE7C606E213"
-            "Icon" = "8:_58F1313E654C4238AF6F9A28BA644D52"
+            "Icon" = "8:_1FA206C35DDF45818CFB29E56E284054"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_E441F0588A4A4EB391B62197ED9DCF83"
@@ -385,7 +385,7 @@
             "Target" = "8:_19382C5AFD6E4FDB8723AB7DB7DE9001"
             "Folder" = "8:_BF452A3E1C284FD18FBDAE40CF0B2C32"
             "WorkingFolder" = "8:_CDC543CA3E0746AB9D8C6BE7C606E213"
-            "Icon" = "8:_58F1313E654C4238AF6F9A28BA644D52"
+            "Icon" = "8:_1FA206C35DDF45818CFB29E56E284054"
             "Feature" = "8:"
             }
         }
@@ -693,7 +693,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_19382C5AFD6E4FDB8723AB7DB7DE9001"
             {
-            "SourcePath" = "8:..\\SwitchAudioDevices\\obj\\Debug\\SwitchAudioDevices.exe"
+            "SourcePath" = "8:..\\SwitchAudioDevices\\obj\\x64\\Debug\\SwitchAudioDevices.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_CDC543CA3E0746AB9D8C6BE7C606E213"
